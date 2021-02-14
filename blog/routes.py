@@ -1,9 +1,10 @@
 import re
 from flask import render_template, url_for, request, redirect
+from flask_login.utils import logout_user
 from blog.models import User, Post
 from blog import app, db
 from blog.forms import LoginForm, RegistrationForm
-from flask_login import login_user
+from flask_login import login_user, logout_user
 
 
 @app.route("/")
@@ -42,3 +43,9 @@ def login():
             login_user(user)
             return redirect(url_for('home'))
     return render_template('login.html', title='Login', form=form)
+
+#This page needs testing!
+@app.route("/logout")
+def logout():
+    logout_user()
+    return redirect(url_for('home'))

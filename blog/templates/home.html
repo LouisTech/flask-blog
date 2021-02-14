@@ -1,7 +1,9 @@
 {% extends "layout.html" %}
 {% block content %}
 <h1>Hello, World!</h1>
-
+{% if current_user.username %}
+<h3>Hi, {{ current_user.username }}!</h3>
+{% endif %}
 {% for post in posts %}
 <div class="posts">
     <a href="{{ url_for('post', post_id=post.id) }}">
