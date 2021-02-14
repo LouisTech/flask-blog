@@ -3,10 +3,16 @@
 <h1>Hello, World!</h1>
 
 {% for post in posts %}
-<p>"{{post.title}}" &nbsp
-    by {{post.user.username}}
-</p>
-<p>{{post.content}}</p>
+<div class="posts">
+    <a href="{{ url_for('post', post_id=post.id) }}">
+        <img src="{{ url_for('static', filename='img/' + post.image_file) }}" class="post_thumb">
+    </a>
+<p> 
+        <a href="{{ url_for('post', post_id=post.id) }}">"{{post.title}}"</a> &nbsp
+        by {{post.user.username}}
+    </p>
+    <p>{{post.content}}</p>
+</div>
 {% endfor %}
 
 {% endblock content %}
