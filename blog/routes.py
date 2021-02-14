@@ -1,7 +1,9 @@
+import re
 from flask import render_template, url_for, request, redirect
 from blog.models import User, Post
 from blog import app, db
-from blog.forms import RegistrationForm
+from blog.forms import LoginForm, RegistrationForm
+from flask_login import login_user
 
 
 @app.route("/")
@@ -30,3 +32,13 @@ def register():
         db.session.commit()
         return redirect(url_for('home'))
     return render_template('register.html', title='Register', form=form)
+
+@app.route("/login", methods=['GET', 'POST'])
+def login():
+    form = LoginForm()
+    if request.method == 'POST':
+        user = User.query.filter_by(email=form.email.data).first()
+        if user is not None and user.verify_password(form.password.data):
+            login_user(user)
+            return redirect(url_for('home'))
+    return render_template('login.html', title='Login', form=form)
