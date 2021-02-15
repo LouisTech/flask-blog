@@ -1,8 +1,9 @@
 from flask_wtf import FlaskForm
+from wtforms import validators
 from wtforms.fields.core import StringField
 from wtforms import StringField
 from wtforms.fields.simple import PasswordField, SubmitField
-from wtforms.validators import DataRequired, EqualTo, Length, Email, ValidationError, Regexp
+from wtforms.validators import DataRequired, EqualTo, InputRequired, Length, Email, ValidationError, Regexp
 from blog.models import User
 
 class RegistrationForm(FlaskForm):
@@ -14,7 +15,7 @@ class RegistrationForm(FlaskForm):
                             DataRequired(), Length(min=1, max=49)])
     email = StringField('Email', validators=[DataRequired(), Email()])
     password = PasswordField('Password', validators=[DataRequired(), Regexp(
-        '^.{6,8}$', message='Your password should be between 6 and 8 characters long')])
+        '^.{6,20}$', message='Your password should be between 6 and 20 characters long')])
     confirm_password = PasswordField('Confirm Password', validators=[
                                      DataRequired(), EqualTo('password')])
     submit = SubmitField('Register')
@@ -39,3 +40,8 @@ class LoginForm(FlaskForm):
     password = PasswordField('Password', validators=[DataRequired()])
     submit = SubmitField('Login')
     #Need to add validation here
+
+
+class CommentForm(FlaskForm):
+    comment = StringField('Comment', validators=[InputRequired()])
+    submit = SubmitField('Post Comment')
