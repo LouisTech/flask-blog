@@ -1,5 +1,5 @@
 import re
-from flask import render_template, url_for, request, redirect
+from flask import render_template, url_for, request, redirect, flash
 from flask_login.utils import logout_user
 from blog.models import User, Post
 from blog import app, db
@@ -26,7 +26,7 @@ def post(post_id):
 @app.route("/register", methods=['GET', 'POST'])
 def register():
     form = RegistrationForm()
-    if request.method == 'POST':
+    if form.validate_on_submit():
         user = User(username=form.username.data, first_name=form.first_name.data,
                     last_name=form.last_name.data, email=form.email.data, password=form.password.data)
         db.session.add(user)
@@ -37,11 +37,12 @@ def register():
 @app.route("/login", methods=['GET', 'POST'])
 def login():
     form = LoginForm()
-    if request.method == 'POST':
+    if form.validate_on_submit():
         user = User.query.filter_by(email=form.email.data).first()
         if user is not None and user.verify_password(form.password.data):
             login_user(user)
             return redirect(url_for('home'))
+    flash('Invalid email address or password.')
     return render_template('login.html', title='Login', form=form)
 
 #This page needs testing!

@@ -11,6 +11,17 @@
 <div id="content">
 {% block content %}
 {% endblock %}
+<div>
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <ul class=flashes>
+            {% for message in messages %}
+            <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+    {% endwith %}
+</div>
 <a href="{{ url_for('home') }}">Home</a>&nbsp
 <a href="{{ url_for('about') }}">About Us</a>
 {% if current_user.username %}
