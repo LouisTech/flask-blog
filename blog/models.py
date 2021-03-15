@@ -27,7 +27,8 @@ class User(UserMixin, db.Model):
     password = db.Column(db.String(60), nullable=False)
     post = db.relationship('Post', backref='user', lazy=True)
     comment=db.relationship('Comment',backref='user',lazy=True)
-
+    is_admin = db.Column(db.Boolean, nullable=False, default=False)
+    
     def __repr__(self):
         return f"User('{self.username}', '{self.email}')"
     
@@ -53,8 +54,6 @@ class Comment(db.Model):
 
     def __repr__(self):
         return f"Post('{self.date}', '{self.content}')"
-
-    
 
 from blog import login_manager
 @login_manager.user_loader

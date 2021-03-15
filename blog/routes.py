@@ -3,15 +3,20 @@ from flask import render_template, url_for, request, redirect, flash
 from flask_login.utils import login_required, logout_user
 from blog.models import User, Post, Comment
 from blog import app, db
-from blog.forms import LoginForm, RegistrationForm, CommentForm
+from blog.forms import LoginForm, RegistrationForm, CommentForm, SearchForm
 from flask_login import current_user, login_user, logout_user
 
 
 @app.route("/")
-@app.route("/home")
+@app.route("/home", methods=['GET', 'POST'])
 def home():
-    posts = Post.query.all()
-    return render_template('home.html', title='Home', posts=posts)
+    form = SearchForm(request.form)
+    if request.method == 'POST':
+        searched = form.search.data
+        posts = Post.query.filter(Post.title.contains(searched) | Post.content.contains(searched))
+    else:
+        posts = Post.query.all()
+    return render_template('home.html', title='Home', posts=posts, form=form)
 
 
 @app.route("/about")

@@ -45,3 +45,8 @@ class LoginForm(FlaskForm):
 class CommentForm(FlaskForm):
     comment = StringField('Comment', validators=[InputRequired()])
     submit = SubmitField('Post Comment')
+
+class SearchForm(FlaskForm):
+    search = StringField('Search')
+    submit = SubmitField('Search')
+
