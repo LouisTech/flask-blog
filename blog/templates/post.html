@@ -3,20 +3,25 @@
 <img src="{{url_for('static', filename='img/'+post.image_file) }}" alt="">
 <p>"{{ post.title }}" &nbsp Author: {{ post.user.username }}</p>
 <p>{{ post.content }}</p>
+<form action="{{ url_for('rate_post', post_id=post.id)}}" method="POST">
+    {{ comment_form.hidden_tag() }}
+    {{rating_form.rating}}
+    {{ rating_form.submit() }}
+</form>
 {% for comment in comments %}
     <p>"{{ comment.content }}" &nbsp <small>Author:
         {{ comment.user.username }} </small></p>
 {% endfor %}
 <form action="{{ url_for('post_comment', post_id=post.id)}}" method="POST">
-    {{ form.hidden_tag() }}
+    {{ comment_form.hidden_tag() }}
     <div class="">
-        {{ form.comment.label }} {{ form.comment }}
-        {% for error in form.comment.errors %}
+        {{ comment_form.comment.label }} {{ comment_form.comment }}
+        {% for error in comment_form.comment.errors %}
         <span style="color: red;">[{{ error }}]</span>
         {% endfor %}
     </div>
     <div class="">
-        {{ form.submit() }}
+        {{ comment_form.submit() }}
     </div>
 </form>
 {%endblock content%}

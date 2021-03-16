@@ -16,5 +16,9 @@
     <p>{{post.content}}</p>
 </div>
 {% endfor %}
+<form action="" method="POST">
+    {{ search_form.search }}
+    <input type="submit" value="Search">
+</form>
 
 {% endblock content %}

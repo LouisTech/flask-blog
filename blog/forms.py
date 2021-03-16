@@ -1,7 +1,7 @@
 from flask_wtf import FlaskForm
 from wtforms import validators
 from wtforms.fields.core import StringField
-from wtforms import StringField
+from wtforms import StringField, SelectField
 from wtforms.fields.simple import PasswordField, SubmitField
 from wtforms.validators import DataRequired, EqualTo, InputRequired, Length, Email, ValidationError, Regexp
 from blog.models import User
@@ -45,6 +45,10 @@ class LoginForm(FlaskForm):
 class CommentForm(FlaskForm):
     comment = StringField('Comment', validators=[InputRequired()])
     submit = SubmitField('Post Comment')
+
+class RatingForm(FlaskForm):
+    rating = SelectField('Rating', choices=[0,1,2,3,4,5,6,7,8,9,10])
+    submit = SubmitField('Submit')
 
 class SearchForm(FlaskForm):
     search = StringField('Search')

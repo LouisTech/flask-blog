@@ -26,7 +26,8 @@ class User(UserMixin, db.Model):
     password_hash = db.Column(db.String(128))
     password = db.Column(db.String(60), nullable=False)
     post = db.relationship('Post', backref='user', lazy=True)
-    comment=db.relationship('Comment',backref='user',lazy=True)
+    comment=db.relationship('Comment', backref='user',lazy=True)
+    rating=db.relationship('Rating', backref='user',lazy=True)
     is_admin = db.Column(db.Boolean, nullable=False, default=False)
     
     def __repr__(self):
@@ -54,6 +55,18 @@ class Comment(db.Model):
 
     def __repr__(self):
         return f"Post('{self.date}', '{self.content}')"
+
+class Rating(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    rating = db.Column(db.Integer)
+    rater_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    post_id = db.Column(db.Integer, db.ForeignKey('post.id'), nullable=False)
+    
+    def __repr__(self):
+        return f"Rating('{self.post_id}', '{self.rating}')"
+    
+    
+
 
 from blog import login_manager
 @login_manager.user_loader
