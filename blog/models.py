@@ -64,8 +64,7 @@ class Rating(db.Model):
     
     def __repr__(self):
         return f"Rating('{self.post_id}', '{self.rating}')"
-    
-    
+        
 
 
 from blog import login_manager

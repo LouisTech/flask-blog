@@ -3,6 +3,8 @@
 <img src="{{url_for('static', filename='img/'+post.image_file) }}" alt="">
 <p>"{{ post.title }}" &nbsp Author: {{ post.user.username }}</p>
 <p>{{ post.content }}</p>
+<p>Average Rating: {{ avg_rating }}</p>
+<p>Your Rating: {{ user_rating }} </p>
 <form action="{{ url_for('rate_post', post_id=post.id)}}" method="POST">
     {{ comment_form.hidden_tag() }}
     {{rating_form.rating}}

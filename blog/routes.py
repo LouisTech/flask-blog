@@ -6,7 +6,6 @@ from blog import app, db
 from blog.forms import LoginForm, RegistrationForm, CommentForm, SearchForm, RatingForm
 from flask_login import current_user, login_user, logout_user
 
-
 @app.route("/")
 @app.route("/home", methods=['GET', 'POST'])
 def home():
@@ -29,7 +28,20 @@ def post(post_id):
     comments = Comment.query.filter(Comment.post_id == post.id)
     comment_form = CommentForm()
     rating_form = RatingForm()
-    return render_template('post.html', title=post.title, post=post, comments=comments, comment_form=comment_form, rating_form=rating_form)
+    #Calculate average rating
+    avg_rating = 0.0
+    user_rating = Rating.query.filter_by(rater_id=current_user.id, post_id=post.id).first()
+    if not user_rating:
+        user_rating = "Not Rated"
+    else:
+        user_rating = str(user_rating.rating)
+        
+    all_ratings = Rating.query.filter_by(post_id=post.id).all()
+    if all_ratings:
+        for i in range(len(all_ratings)):
+            avg_rating += all_ratings[i].rating
+        avg_rating /= len(all_ratings)
+    return render_template('post.html', title=post.title, post=post, comments=comments, comment_form=comment_form, rating_form=rating_form, avg_rating=avg_rating, user_rating=user_rating)
 
 @app.route('/post/<int:post_id>/comment', methods=['GET', 'POST'])
 @login_required
@@ -40,7 +52,7 @@ def post_comment(post_id):
     if comment_form.validate_on_submit():
         db.session.add(Comment(content=comment_form.comment.data, post_id = post.id, author_id=current_user.id))
         db.session.commit()
-        flash('Your comment has been added to the post', 'success')
+        flash('Your comment has beesn added to the post', 'success')
         return redirect(f'/post/{post.id}')
     
     comments = Comment.query.filter(Comment.post_id == post.id)
@@ -49,14 +61,21 @@ def post_comment(post_id):
 @app.route('/post/<int:post_id>/rate', methods=['GET', 'POST'])
 @login_required
 def rate_post(post_id):
-    print("worked1", flush=True)
     post = Post.query.get_or_404(post_id)
-    rating_form = RatingForm()
     comment_form = CommentForm()
     comments = Comment.query.filter(Comment.post_id == post.id)
+
+    rating_form = RatingForm()
+    print("user id: ", current_user.id, flush=True)
     if rating_form.validate_on_submit():
-        print("worked", flush=True)
-        db.session.add(Rating(rating=rating_form.rating.data, rater_id=current_user.id, post_id = post.id))
+        
+        #Check if user has already given this post a rating
+        old_rating = Rating.query.filter_by(rater_id=current_user.id, post_id=post.id).first()
+        print("Results", old_rating, flush=True)
+        if old_rating:
+            old_rating.rating = rating_form.rating.data
+        else:
+            db.session.add(Rating(rating=rating_form.rating.data, rater_id=current_user.id, post_id = post.id))
         db.session.commit()
         flash('Your rating has been added to the post', 'success')
         return redirect(f'/post/{post.id}')
