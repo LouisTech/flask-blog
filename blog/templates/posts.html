@@ -1,0 +1,27 @@
+{% extends "layout.html" %}{% set active = 'posts' %}
+{% block content %}
+{% if current_user.username %}
+<h3>Hi, {{ current_user.username }}!</h3>
+{% endif %}
+<div class="posts-area">
+{% for post in posts %}
+    <div class="posts">
+        <div class="posts-img">
+            <a class="posts-image-link" href="{{ url_for('post', post_id=post.id) }}">
+                <img src="{{ url_for('static', filename='img/' + post.image_file) }}" class="post_thumb">
+            </a>
+            </div>
+                <div class="posts-content">
+                    <a href="{{ url_for('post', post_id=post.id) }}">
+                        <div class="posts-inner-content">
+                            <h2 class="posts-title">{{post.title}}</h2>
+                            <p class="posts-text">{{post.content}}</p>
+                            <p class="posts-author">Author: {{post.user.username}}</p>
+                            <p class="posts-date">{{post.date.strftime('%Y-%m-%d')}}</p>
+                        </div>
+                    </a>
+            </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock content %}

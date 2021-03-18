@@ -4,16 +4,19 @@
 <p>"{{ post.title }}" &nbsp Author: {{ post.user.username }}</p>
 <p>{{ post.content }}</p>
 <p>Average Rating: {{ avg_rating }}</p>
-<p>Your Rating: {{ user_rating }} </p>
+{% if user_rating %}
+    <p>Your Rating: {{ user_rating }} </p>
 <form action="{{ url_for('rate_post', post_id=post.id)}}" method="POST">
     {{ comment_form.hidden_tag() }}
     {{rating_form.rating}}
     {{ rating_form.submit() }}
 </form>
+{% endif %}
 {% for comment in comments %}
     <p>"{{ comment.content }}" &nbsp <small>Author:
         {{ comment.user.username }} </small></p>
 {% endfor %}
+{% if current_user.is_authenticated %}
 <form action="{{ url_for('post_comment', post_id=post.id)}}" method="POST">
     {{ comment_form.hidden_tag() }}
     <div class="">
@@ -26,4 +29,5 @@
         {{ comment_form.submit() }}
     </div>
 </form>
+{% endif%}
 {%endblock content%}

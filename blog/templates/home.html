@@ -1,24 +1,81 @@
-{% extends "layout.html" %}
+{% extends "layout.html" %}{% set active = 'home' %}
 {% block content %}
-<h1>Hello, World!</h1>
 {% if current_user.username %}
 <h3>Hi, {{ current_user.username }}!</h3>
 {% endif %}
-{% for post in posts %}
-<div class="posts">
-    <a href="{{ url_for('post', post_id=post.id) }}">
-        <img src="{{ url_for('static', filename='img/' + post.image_file) }}" class="post_thumb">
-    </a>
-<p> 
-        <a href="{{ url_for('post', post_id=post.id) }}">"{{post.title}}"</a> &nbsp
-        by {{post.user.username}}
-    </p>
-    <p>{{post.content}}</p>
+<div class="home-content-area">
+    <div class="home-hero-area">
+        <div class="home-hero-img">
+            <a href="{{ url_for('post', post_id=posts[0].id) }}">
+                <img src="{{ url_for('static', filename='img/' + posts[0].image_file) }}" alt="">
+            </a>
+        </div>
+        <div class="home-hero-outer">
+            <a href="{{ url_for('post', post_id=posts[0].id) }}">
+                <div class="home-hero-content">
+                    <h1 class="home-hero-title">{{posts[0].title}}</h1>
+                    <p class="home-hero-text">{{posts[0].content}}</p>
+                    <p class="home-hero-author">{{posts[0].user.username}}</p>
+                    <p class="home-hero-date">{{posts[0].date.strftime('%Y-%m-%d')}}</p>
+                </div>
+            </a>
+        </div>
+    </div>
+    <div class="home-sep-area">
+        <p class="home-sep-text">Latest Posts</p>
+    </div>
+    <div class="home-other-area">
+        <div id="home-other-first" class="home-other-post">
+            <div class="home-other-img">
+                <a href="{{ url_for('post', post_id=posts[1].id) }}">
+                    <img src="{{ url_for('static', filename='img/' + posts[1].image_file) }}" alt="">
+                </a>
+            </div>
+            <div class="home-other-outer">
+                <a href="{{ url_for('post', post_id=posts[1].id) }}">
+                    <div class="home-other-inner">
+                        <h2 class="home-other-title">{{posts[1].title}}</h2>
+                        <p class="home-other-text">{{posts[1].content}}</p>
+                        <p class="home-other-author">{{posts[1].user.username}}</p>
+                        <p class="home-other-date">{{posts[1].date.strftime('%Y-%m-%d')}}</p>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <div id="home-other-second" class="home-other-post">
+            <div class="home-other-img">
+                <a href="{{ url_for('post', post_id=posts[2].id) }}">
+                    <img src="{{ url_for('static', filename='img/' + posts[2].image_file) }}" alt="">
+                </a>
+            </div>
+            <div class="home-other-outer">
+                <a href="{{ url_for('post', post_id=posts[2].id) }}">
+                    <div class="home-other-inner">
+                        <h2 class="home-other-title">{{posts[2].title}}</h2>
+                        <p class="home-other-text">{{posts[2].content}}</p>
+                        <p class="home-other-author">{{posts[2].user.username}}</p>
+                        <p class="home-other-date">{{posts[2].date.strftime('%Y-%m-%d')}}</p>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <div id="home-other-third" class="home-other-post">
+            <div class="home-other-img">
+                <a href="{{ url_for('post', post_id=posts[3].id) }}">
+                    <img src="{{ url_for('static', filename='img/' + posts[3].image_file) }}" alt="">
+                </a>
+            </div>
+            <div class="home-other-outer">
+                <a href="{{ url_for('post', post_id=posts[3].id) }}">
+                    <div class="home-other-inner">
+                        <h2 class="home-other-title">{{posts[3].title}}</h2>
+                        <p class="home-other-text">{{posts[3].content}}</p>
+                        <p class="home-other-author">{{posts[3].user.username}}</p>
+                        <p class="home-other-date">{{posts[3].date.strftime('%Y-%m-%d')}}</p>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
 </div>
-{% endfor %}
-<form action="" method="POST">
-    {{ search_form.search }}
-    <input type="submit" value="Search">
-</form>
-
 {% endblock content %}

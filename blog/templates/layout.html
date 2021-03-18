@@ -2,35 +2,52 @@
 <html>
 <head>
 <meta charset="utf-8">
-    <title>My Wonderful Site</title>
+    <title>{{title}}</title>
     <link rel=stylesheet type=text/css href="{{ url_for('static',filename='style.css') }}">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Oswald&display=swap" rel="stylesheet">
 </head>
 <body>
-<div id="header">
-</div>
-<div id="content">
-    {% block content %}
-    {% endblock %}
-    <div>
-        {% with messages = get_flashed_messages() %}
-            {% if messages %}
-            <ul class=flashes>
-                {% for message in messages %}
-                <li>{{ message }}</li>
-                {% endfor %}
-            </ul>
+<div id="site-container">
+    <div id="header">
+        <a id="nav-logo" href="{{ url_for('home') }}">
+            <span class="hover">L</span><span class="hover">O</span><span class="hover">U</span><span class="hover">I</span><span class="hover">S</span>
+            <span class="hover">T</span><span class="hover">A</span><span class="hover">Y</span><span class="hover">L</span><span class="hover">O</span><span class="hover">R</span>
+            </a>
+        <nav class="nav-bar">
+            <a class="nav-item {{'active' if active == 'home' }}" href="{{ url_for('home') }}">Home</a>&nbsp
+            <a class="nav-item {{'active' if active == 'posts' }}" href="{{ url_for('posts') }}">Posts</a>&nbsp
+            <a class="nav-item {{'active' if active == 'about' }}" href="{{ url_for('about') }}">About Us</a>
+            {% if current_user.username %}
+            <a class="nav-item {{'active' if active == 'logout' }}" href="{{ url_for('logout') }}">Log Out</a>&nbsp
+            {% else %}
+            <a class="nav-item {{'active' if active == 'login' }}" href="{{ url_for('login') }}">Log In</a>
+            <a class="nav-item {{'active' if active == 'register' }}" href="{{ url_for('register') }}">Register</a>&nbsp
             {% endif %}
-        {% endwith %}
+        </nav>
+        <form action="" method="POST" class="search-form">
+            {{ search_form.search }}
+            <input type="submit" value="Search">
+        </form> 
     </div>
-    <a href="{{ url_for('home') }}">Home</a>&nbsp
-    <a href="{{ url_for('about') }}">About Us</a>
-    {% if current_user.username %}
-    <a href="{{ url_for('logout') }}">Log Out</a>&nbsp
-    {% else %}
-    <a href="{{ url_for('login') }}">Log In</a>&nbsp
-    <a href="{{ url_for('register') }}">Register</a>&nbsp
-    {% endif %}
-    
+    <div id="content">
+        {% block content %}
+        {% endblock %}
+        <div>
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                <ul class=flashes>
+                    {% for message in messages %}
+                    <li>{{ message }}</li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+            {% endwith %}
+        </div>   
+    </div>
+    <div id="footer">
+
+    </div>
 </div>
 </body>
 </html>
