@@ -39,8 +39,6 @@ class LoginForm(FlaskForm):
     email = StringField('Email', validators=[DataRequired(), Email()])
     password = PasswordField('Password', validators=[DataRequired()])
     submit = SubmitField('Login')
-    #Need to add validation here
-
 
 class CommentForm(FlaskForm):
     comment = StringField('Comment', validators=[InputRequired()])

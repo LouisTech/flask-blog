@@ -4,24 +4,61 @@
 <h3>Hi, {{ current_user.username }}!</h3>
 {% endif %}
 <div class="posts-area">
-{% for post in posts %}
-    <div class="posts shadow">
-        <div class="posts-img">
-            <a class="posts-image-link" href="{{ url_for('post', post_id=post.id) }}">
-                <img src="{{ url_for('static', filename='img/' + post.image_file) }}" class="post_thumb">
-            </a>
-            </div>
+    <div class="sorter">
+        <form method="POST" action="{{ url_for('posts') }}">
+            Sort posts by: 
+            <select name="order">
+                {% if reversed %}
+                <option value="oldest">Oldest first</option> 
+                <option value="newest">Newest first</option>
+                {% else %}
+                <option value="newest">Newest first</option>
+                <option value="oldest">Oldest first</option> 
+                {% endif %}
+            </select> 
+            <input type="submit" value="Go">
+        </form>
+    </div>
+    {% if reversed %}
+        {% for post in posts %}
+            <div class="posts shadow">
+                <div class="posts-img">
+                    <a class="posts-image-link" href="{{ url_for('post', post_id=post.id) }}">
+                        <img src="{{ url_for('static', filename='img/' + post.image_file) }}" class="post_thumb">
+                    </a>
+                </div>
                 <div class="posts-content">
                     <a href="{{ url_for('post', post_id=post.id) }}">
                         <div class="posts-inner-content">
                             <h2 class="posts-title">{{post.title}}</h2>
                             <p class="posts-text">{{post.content}}</p>
                             <p class="posts-author">Author: {{post.user.username}}</p>
-                            <p class="posts-date">{{post.date.strftime('%Y-%m-%d')}}</p>
+                            <p class="posts-date">{{post.date.strftime('%d-%m-%Y')}}</p>
                         </div>
                     </a>
+                </div>
             </div>
-    </div>
-    {% endfor %}
+        {% endfor %}
+    {% else %}
+        {% for post in posts | reverse %}
+        <div class="posts shadow">
+            <div class="posts-img">
+                <a class="posts-image-link" href="{{ url_for('post', post_id=post.id) }}">
+                    <img src="{{ url_for('static', filename='img/' + post.image_file) }}" class="post_thumb">
+                </a>
+            </div>
+            <div class="posts-content">
+                <a href="{{ url_for('post', post_id=post.id) }}">
+                    <div class="posts-inner-content">
+                        <h2 class="posts-title">{{post.title}}</h2>
+                        <p class="posts-text">{{post.content}}</p>
+                        <p class="posts-author">Author: {{post.user.username}}</p>
+                        <p class="posts-date">{{post.date.strftime('%d-%m-%Y')}}</p>
+                    </div>
+                </a>
+            </div>
+        </div>
+        {% endfor %}
+    {% endif %}
 </div>
 {% endblock content %}

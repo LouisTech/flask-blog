@@ -14,43 +14,34 @@ def home():
     four_posts = []
     for i in range(len(posts)-1,len(posts)-5,-1):
         four_posts.append(posts[i])
-    search_form = SearchForm(request.form)
-    if request.method == 'POST':
-        searched = search_form.search.data
-        return redirect(url_for('posts', search_form = searched))
+    search_form = SearchForm()
     return render_template('home.html', title='LT | Home', posts=four_posts, search_form=search_form)
 
 @app.route("/posts", methods=['GET', 'POST'])
 def posts():
+    order = request.form.get('order')
+    reverse = False
+    if order == 'oldest':
+        reverse = True
+
     posts = Post.query.all()
-    search_form = SearchForm(request.form)
-    if request.method == 'POST':
-        searched = search_form.search.data
-        posts = Post.query.filter(Post.title.contains(searched) | Post.content.contains(searched))
-    else:
-        posts = Post.query.all()
-    #format post dates
-    return render_template('posts.html', title='LT | Posts', posts=posts, search_form=search_form)
+    search_form = SearchForm()
+    return render_template('posts.html', title='LT | Posts', posts=posts, search_form=search_form, reversed=reverse)
 
-
-@app.route("/about", methods=['GET', 'POST'])
-def about():
+@app.route("/search", methods=['GET', 'POST'])
+def search():
     search_form = SearchForm(request.form)
-    if request.method == 'POST':
-        searched = search_form.search.data
-        return redirect(url_for('posts', search_form=searched))
-    return render_template('about.html', title='LT | About', search_form=search_form)
+    searched = search_form.search.data
+    posts = Post.query.filter(Post.title.contains(searched) | Post.content.contains(searched))
+    return render_template('posts.html', title='LT | Posts', posts=posts, search_form=search_form, reversed=False)
 
 @app.route("/post/<int:post_id>", methods=['GET', 'POST'])
 def post(post_id):
-    search_form = SearchForm(request.form)
-    if request.method == 'POST':
-        searched = search_form.search.data
-        return redirect(url_for('posts', search_form=searched))
-
+    search_form = SearchForm()
     post = Post.query.get_or_404(post_id)
     comments = Comment.query.filter(Comment.post_id == post.id)
     comment_form = CommentForm()
+
     rating_form = RatingForm()
     #Calculate average rating
     avg_rating = 0.0
@@ -107,10 +98,7 @@ def rate_post(post_id):
 
 @app.route("/register", methods=['GET', 'POST'])
 def register():
-    search_form = SearchForm(request.form)
-    if request.method == 'POST':
-        searched = search_form.search.data
-        return redirect(url_for('posts', search_form=searched))
+    search_form = SearchForm()
 
     form = RegistrationForm()
     if form.validate_on_submit():
@@ -123,20 +111,20 @@ def register():
 
 @app.route("/login", methods=['GET', 'POST'])
 def login():
+    if current_user.is_authenticated:
+        return redirect(url_for('home'))
 
     form = LoginForm()
     if form.validate_on_submit():
+        print("Test", flush=True)
         user = User.query.filter_by(email=form.email.data).first()
-        if user is not None and user.verify_password(form.password.data):
-            login_user(user)
-            return redirect(url_for('home'))
-        else:
+        if user is None or not user.verify_password(form.password.data):
             flash('Invalid email address or password.')
-    
-    search_form = SearchForm(request.form)
-    if request.method == 'POST':
-        searched = search_form.search.data
-        return redirect(url_for('posts', search_form = searched))
+            return redirect(url_for('login'))
+        login_user(user)
+        return redirect(url_for('home'))
+        
+    search_form = SearchForm()
     return render_template('login.html', title='LT | Login', form=form, search_form=search_form)
 
 #This page needs testing!
@@ -147,8 +135,5 @@ def logout():
 
 @app.route("/privacy", methods=['GET', 'POST'])
 def privacy():
-    search_form = SearchForm(request.form)
-    if request.method == 'POST':
-        searched = search_form.search.data
-        return redirect(url_for('posts', search_form = searched))
+    search_form = SearchForm()
     return render_template('privacypolicy.html', title='LT | Privacy', search_form=search_form)

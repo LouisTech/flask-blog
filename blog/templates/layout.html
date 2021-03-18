@@ -17,7 +17,6 @@
         <nav class="nav-bar">
             <a class="nav-item {{'active' if active == 'home' }}" href="{{ url_for('home') }}">Home</a>&nbsp
             <a class="nav-item {{'active' if active == 'posts' }}" href="{{ url_for('posts') }}">Posts</a>&nbsp
-            <a class="nav-item {{'active' if active == 'about' }}" href="{{ url_for('about') }}">About Me</a>
             {% if current_user.username %}
             <a class="nav-item {{'active' if active == 'logout' }}" href="{{ url_for('logout') }}">Log Out</a>&nbsp
             {% else %}
@@ -25,7 +24,7 @@
             <a class="nav-item {{'active' if active == 'register' }}" href="{{ url_for('register') }}">Register</a>&nbsp
             {% endif %}
         </nav>
-        <form action="" method="POST" class="search-form">
+        <form action="{{ url_for('search') }}" method="POST" class="search-form">
             {{ search_form.search }}
             <input type="submit" value="Search">
         </form> 
