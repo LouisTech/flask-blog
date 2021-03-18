@@ -17,7 +17,7 @@
         <nav class="nav-bar">
             <a class="nav-item {{'active' if active == 'home' }}" href="{{ url_for('home') }}">Home</a>&nbsp
             <a class="nav-item {{'active' if active == 'posts' }}" href="{{ url_for('posts') }}">Posts</a>&nbsp
-            <a class="nav-item {{'active' if active == 'about' }}" href="{{ url_for('about') }}">About Us</a>
+            <a class="nav-item {{'active' if active == 'about' }}" href="{{ url_for('about') }}">About Me</a>
             {% if current_user.username %}
             <a class="nav-item {{'active' if active == 'logout' }}" href="{{ url_for('logout') }}">Log Out</a>&nbsp
             {% else %}
@@ -46,7 +46,8 @@
         </div>   
     </div>
     <div id="footer">
-
+        <a href="{{ url_for('privacy') }}"><p>Privacy Policy</p></a>
+        <p class="contact">Contact me: <a href="mailto:taylorld1@cardiff.ac.uk">taylorld1@cardiff.ac.uk</a></p>
     </div>
 </div>
 </body>

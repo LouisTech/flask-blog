@@ -144,3 +144,11 @@ def login():
 def logout():
     logout_user()
     return redirect(url_for('home'))
+
+@app.route("/privacy", methods=['GET', 'POST'])
+def privacy():
+    search_form = SearchForm(request.form)
+    if request.method == 'POST':
+        searched = search_form.search.data
+        return redirect(url_for('posts', search_form = searched))
+    return render_template('privacypolicy.html', title='LT | Privacy', search_form=search_form)
