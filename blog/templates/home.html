@@ -4,7 +4,7 @@
 <h3>Hi, {{ current_user.username }}!</h3>
 {% endif %}
 <div class="home-content-area">
-    <div class="home-hero-area">
+    <div class="home-hero-area shadow">
         <div class="home-hero-img">
             <a href="{{ url_for('post', post_id=posts[0].id) }}">
                 <img src="{{ url_for('static', filename='img/' + posts[0].image_file) }}" alt="">
@@ -25,7 +25,7 @@
         <p class="home-sep-text">Latest Posts</p>
     </div>
     <div class="home-other-area">
-        <div id="home-other-first" class="home-other-post">
+        <div id="home-other-first" class="home-other-post shadow">
             <div class="home-other-img">
                 <a href="{{ url_for('post', post_id=posts[1].id) }}">
                     <img src="{{ url_for('static', filename='img/' + posts[1].image_file) }}" alt="">
@@ -42,7 +42,7 @@
                 </a>
             </div>
         </div>
-        <div id="home-other-second" class="home-other-post">
+        <div id="home-other-second" class="home-other-post shadow">
             <div class="home-other-img">
                 <a href="{{ url_for('post', post_id=posts[2].id) }}">
                     <img src="{{ url_for('static', filename='img/' + posts[2].image_file) }}" alt="">
@@ -59,7 +59,7 @@
                 </a>
             </div>
         </div>
-        <div id="home-other-third" class="home-other-post">
+        <div id="home-other-third" class="home-other-post shadow">
             <div class="home-other-img">
                 <a href="{{ url_for('post', post_id=posts[3].id) }}">
                     <img src="{{ url_for('static', filename='img/' + posts[3].image_file) }}" alt="">

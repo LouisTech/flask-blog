@@ -115,7 +115,7 @@ img{
 .home-hero-area{
   grid-row: 1;
   grid-column-start: 1;
-  grid-column-end: 7;
+  grid-column-end: 6;
   
   
   grid-template-columns: repeat(6, 1fr);
@@ -124,7 +124,7 @@ img{
 }
 .home-hero-img{
   grid-column-start: 1;
-  grid-column-end: 4;
+  grid-column-end: 5;
   grid-row: 1;
 
   min-height:350px;
@@ -132,8 +132,8 @@ img{
 .home-hero-outer{
   background-color: rgb(216, 216, 216);
   padding: 20px;
-  grid-column-start:4;
-  grid-column-end:6;
+  grid-column-start:5;
+  grid-column-end:7;
   grid-row: 1;
 }
 .home-hero-content{
@@ -220,7 +220,7 @@ img{
   grid-column: 3;
 }
 .home-other-post{
-  padding: 0 60px;
+  margin: 0 60px;
 
   display: grid;
   grid-template-rows: 50% 50%;
@@ -275,6 +275,10 @@ img{
   text-align: center;
   color: #1938c2;
 }
+.shadow:hover{
+  -webkit-box-shadow: 2px 2px 4px 1px #383838;
+  box-shadow: 2px 2px 4px 1px #383838;
+}
 /*------Posts Page------*/
 .posts-area{
   grid-row: 1;
@@ -303,10 +307,6 @@ img{
   grid-row: 2;
   text-decoration: none;
   display: inherit;
-}
-.posts:hover{
-  -webkit-box-shadow: 2px 2px 4px 1px #1938c2;
-  box-shadow: 2px 2px 4px 1px #1938c2;
 }
 .posts-img{
   grid-row: 1;
